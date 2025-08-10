@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrasi Pengguna</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>USER REGISTRATION</h1>
+  </header>
+
+  <main>
+    <div class="form-container">
+      <input type="text" id="name" placeholder="Nama Lengkap" required />
+      <input type="number" id="weight" placeholder="Berat Badan (kg)" required />
+      <select id="gender" required>
+        <option value="">Pilih Jenis Kelamin</option>
+        <option value="1">Laki-laki</option>
+        <option value="2">Perempuan</option>
+      </select>
+
+      <button onclick="startCardRegistration()">Continue</button>
+
+      <p id="status1" style="margin-top: 20px; font-weight: bold;">Fill the requirements above</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Fitness Tracker</p>
+  </footer>
+
+  <script>
+    const BASE_URL = 'https://elliptical-backend.vercel.app';  // Sesuaikan dengan URL server kamu
+    let polling;
+
+    function startCardRegistration() {
+      const name = document.getElementById('name').value;
+      const weight = document.getElementById('weight').value;
+      const gender = document.getElementById('gender').value;
+
+      // Validasi form jika ada data yang kosong
+      if (!name || !weight || !gender) {
+        alert('❗ Harap isi semua data terlebih dahulu ❗');
+        return;
+      }
+
+      document.getElementById('status1').innerText = 'Tempelkan kartu RFID Anda...';
+
+      polling = setInterval(async () => {
+        try {
+          const res = await fetch(BASE_URL + '/scan/card');
+          if (res.ok) {
+            const data = await res.json();
+            const cardId = data.cardId;
+            clearInterval(polling); // Berhenti polling setelah mendapatkan cardId
+
+            // Kirimkan data pengguna ke server untuk registrasi
+            const registerRes = await fetch(BASE_URL + '/users', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ cardId, name, weight, gender })  // Kirimkan data form
+            });
+
+            const registerData = await registerRes.json();
+
+            if (registerRes.ok) {
+              alert('✅ Registrasi berhasil!');
+              window.location.href = '/Frontend/public/index.html';  // Redirect ke index.html setelah registrasi berhasil
+            } else {
+              alert('❌ Gagal registrasi: ' + registerData.message);
+              document.getElementById('status1').innerText = '❌ Registrasi gagal.';
+            }
+          }
+        } catch (err) {
+          console.error('Polling error:', err);
+          document.getElementById('status1').innerText = '❌ Terjadi kesalahan.';
+        }
+      }, 2000); // Poll setiap 2 detik
+    }
+  </script>
+</body>
+</html>

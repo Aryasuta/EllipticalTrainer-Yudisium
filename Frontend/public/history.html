@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Session History</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Sessions History</h1>
+  </header>
+
+  <main>
+    <div id="history-container" class="history-container">
+      <h2>Training History</h2>
+      <div id="history-results"></div>
+      <button class="logout-button" id="logout-button" style="display: none;" onclick="logout()">Logout</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Fitness Tracker</p>
+  </footer>
+
+  <script src="history.js"></script>
+  <script>
+    function goBack() {
+      window.location.href = 'index.html';
+    }
+
+    function logout() {
+      // localStorage.removeItem('activeCardId'); // Don't remove cardId for session retention
+      window.location.href = 'index.html';
+    }
+
+    window.addEventListener('DOMContentLoaded', function () {
+      const cardId = localStorage.getItem('activeCardId');
+      if (cardId) {
+        document.getElementById('logout-button').style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

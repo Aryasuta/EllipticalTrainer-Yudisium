@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fitness Monitoring</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>  
+  <header>
+    <h1>ELLIPTICAL TRAINER</h1>
+  </header>
+
+  <main>
+    <div class="button-container">
+      <button onclick="startMonitoring()" class="start-monitoring" disabled>
+        <i class="fas fa-play"></i> Start Monitoring
+      </button>
+      <button onclick="promptUpdateWeight()" class="update-weight" disabled>
+        <i class="fas fa-weight"></i> Update Weight
+      </button>
+      <button onclick="goToHistoryPage()" class="history-button" id="history-button" disabled>
+        <i class="fas fa-history"></i> View History
+      </button>
+    </div>
+    
+    <p id="status" style="font-weight: bold; margin-top: 20px;">WELCOME</p>
+    <p id="card-status" style="font-weight: bold; color: green;"></p>
+
+    <p id="scan-warning" style="color: red; display:none;">Belum ada sesi dimulai. Scan kartu terlebih dahulu untuk memulai.</p>
+
+    <div id="results" class="result-box" style="display: none;">
+      <p><strong>Final Result</strong></p>
+      <p><strong>Distance:</strong> <span id="distance">0</span> meters</p>
+      <p><strong>Calories Burned:</strong> <span id="calories">0</span> kcal</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Fitness Tracker</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
